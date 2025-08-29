@@ -34,9 +34,40 @@ async function run() {
         // creating a database 
         const CarRent = client.db("CarRentalDatabase")
         // const databaseVariable = client.db("databaseName")
-        
+
         // creating collections
-        const allCarCollection = CarRent.collection("allCars")
+        const allCarCollection = CarRent.collection("AllCars")
+
+
+
+        // posting cars to database
+
+        app.post("/allCars", async (req, res) => {
+            try {
+                const carData = req.body
+                const result = await allCarCollection.insertOne(carData);
+
+                res.status(200).send(result)
+            }
+            catch (err) {
+                res.status(500).send({ message: "something went wrong" })
+            }
+
+        })
+
+        app.get("/getAllCar", async (req, res) => {
+
+            try {
+                const result = await allCarCollection.find().toArray();
+
+                res.send(result);
+            }
+            catch (err) {
+                res.status(500).send({ message: "Something went wrong" })
+            }
+        })
+
+
 
 
 
